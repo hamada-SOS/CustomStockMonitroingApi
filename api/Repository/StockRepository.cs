@@ -42,12 +42,12 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync()
         {
-            return await _context.Stocks.ToListAsync();
+            return await _context.Stocks.Include(c => c.Comments).ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            var stockModel = await _context.Stocks.FindAsync(id); // Adjust 'Stocks' based on your actual DBSet name
+            var stockModel = await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(i => i.ID == id); // Adjust 'Stocks' based on your actual DBSet name
 
             if (stockModel == null)
             {
