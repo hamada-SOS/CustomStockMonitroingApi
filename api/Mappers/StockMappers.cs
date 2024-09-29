@@ -33,7 +33,6 @@ namespace api.Mappers
                 Company = stockDto.Company,
                 Purchase = stockDto.Purchase,
                 LastDiv = stockDto.LastDiv,
-                LastDiv = stockDto.LastDiv,
                 Indestry = stockDto.Indestry,
                 MarketCap = stockDto.MarketCap,
             };
