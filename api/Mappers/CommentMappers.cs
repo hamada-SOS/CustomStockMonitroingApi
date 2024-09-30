@@ -21,5 +21,16 @@ namespace api.Mappers
             };
 
         }
+
+        public static CommentDto ToCommentFromCreateDto(this CreateCommentDto commentDto, int stock_id)
+        {
+            return new CommentDto
+            {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+                StockID = stock_id
+            };
+
+        }
     }
 }
