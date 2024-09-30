@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Comment;
 using api.Interfacses;
 using api.Mappers;
 using api.Models;
@@ -58,6 +59,23 @@ namespace api.Repository
             }
 
             return comment;
+
+        }
+
+        public async Task<Comment?> UpdateAsync(int id, UpdateCommentRequestDto commentDto)
+        {
+            var commentModel = await _context.Comments.FirstOrDefaultAsync(c => c.ID == id);
+
+            if (commentModel == null)
+            {
+                return null;
+            }
+
+            commentModel.Title = commentDto.Title;
+            commentModel.Content = commentDto.Content;
+
+            await _context.SaveChangesAsync();
+            return commentModel;
 
         }
     }
