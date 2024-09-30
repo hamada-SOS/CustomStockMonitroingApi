@@ -22,9 +22,9 @@ namespace api.Mappers
 
         }
 
-        public static CommentDto ToCommentFromCreateDto(this CreateCommentDto commentDto, int stock_id)
+        public static Comment ToCommentFromCreateDto(this CreateCommentDto commentDto, int stock_id)
         {
-            return new CommentDto
+            return new Comment
             {
                 Title = commentDto.Title,
                 Content = commentDto.Content,

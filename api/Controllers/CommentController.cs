@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Comment;
 using api.Interfacses;
 using api.Mappers;
+using api.Models;
 using api.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,18 +49,34 @@ namespace api.Controllers
 
 
         [HttpPost("{stock_id}")]
-        public async Task<IActionResult> Create([FromRoute] int stock_id, CreateCommentDto CommentDto)
+        public async Task<IActionResult> Create([FromRoute] int stock_id, CreateCommentDto commentDto)
         {
             if (!await _stockRepo.StoclExists(stock_id))
             {
                 return BadRequest("Stock Not Found");
             }
 
-            var commentModel = CommentDto.ToCommentFromCreateDto(stock_id);
+            var commentModel = commentDto.ToCommentFromCreateDto(stock_id);
 
             await _commentRepo.CreateAsync(commentModel);
-            return CreatedAtAction(nameof(GetById), new { id = commentModel.ID }, CommentDto.ToCommentDto());
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.ID }, commentModel.ToCommentDto());
 
+        }
+
+
+        [HttpDelete]
+        [Route("{id}")]
+
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var comment = await _commentRepo.DeleyeAsync(id);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }
