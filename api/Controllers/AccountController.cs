@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
+
 {
+    [Route("api/account")]
+    [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
@@ -18,7 +21,8 @@ namespace api.Controllers
             _userManager = userManager;
         }
 
-        [HttpPut]
+        [HttpPost]
+        [Route("api/register")]
         public async Task<IActionResult> CreateAsync([FromBody] RegisterDto registerDto)
         {
             try
