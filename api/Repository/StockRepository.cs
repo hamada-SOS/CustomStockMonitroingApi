@@ -8,6 +8,7 @@ using api.Helpers;
 using api.Interfacses;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace api.Repository
 {
@@ -56,6 +57,17 @@ namespace api.Repository
             {
                 stocks = stocks.Where(s => s.Company.Contains(quary.Company));
             }
+
+            if (!string.IsNullOrWhiteSpace(quary.SortBy))
+            {
+
+                if (quary.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase)) { }
+                {
+                    stocks = quary.IsDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
+                }
+
+            }
+
 
             return stocks.ToList();
         }
