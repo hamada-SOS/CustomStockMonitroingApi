@@ -21,8 +21,8 @@ namespace api.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost]
-        [Route("api/register")]
+        [HttpPost("register")]
+
         public async Task<IActionResult> CreateAsync([FromBody] RegisterDto registerDto)
         {
             try
