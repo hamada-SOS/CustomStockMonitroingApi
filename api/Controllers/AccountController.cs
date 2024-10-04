@@ -81,7 +81,7 @@ namespace api.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("login")]
 
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {

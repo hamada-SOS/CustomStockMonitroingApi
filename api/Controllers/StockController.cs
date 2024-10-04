@@ -7,6 +7,7 @@ using api.Dtos.Stock;
 using api.Helpers;
 using api.Interfacses;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -29,6 +30,7 @@ namespace api.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] QuaryableObjects quary)
         {
             if (ModelState.IsValid)
