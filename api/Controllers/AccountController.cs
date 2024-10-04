@@ -9,6 +9,8 @@ using api.services;
 using Azure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 
 namespace api.Controllers
 
@@ -19,11 +21,13 @@ namespace api.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenSerice;
+        private readonly SignInManager<AppUser> _singInManager;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _tokenSerice = tokenService;
+            _singInManager = signInManager;
         }
 
         [HttpPost("register")]
@@ -74,6 +78,48 @@ namespace api.Controllers
             {
                 return StatusCode(500, e);
             }
+        }
+
+
+        [HttpPost]
+
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName.ToLower());
+
+            if (user == null)
+            {
+                return Unauthorized("UserName Not Found");
+
+            }
+
+            var result = await _singInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+
+            if (!result.Succeeded)
+            {
+                return Unauthorized("Username or Password is inccroect");
+            }
+
+            return Ok(
+
+                new NewUserDto
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Token = _tokenSerice.CreateToken(user)
+                }
+            );
+
+
+
+
         }
     }
 }
