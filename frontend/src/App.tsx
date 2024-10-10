@@ -7,6 +7,7 @@ import { CompanySearch } from './company';
 import { searchCompanies } from './api';
 
 function App() {
+
   const [search, setsearch] = useState<string>("");
   const [seaarchResult, setseaarchResult] = useState<CompanySearch[]>([]);
   const [serverError, setserverError] = useState<string>("");
@@ -20,17 +21,20 @@ function App() {
     const result = await searchCompanies(search)
     if (typeof result === "string") {
       setserverError(result)
-    } else if(Array.isArray(result)){
+    } 
+    else if(Array.isArray(result)){
       setseaarchResult(result)
     }
     console.log(seaarchResult);
+
+    
   };
 
 
   return (
     <div className="App">
       <Search search={search} onClick={onClick} handleChange={handleChange} />
-      <CardList />
+      <CardList searchReasult={seaarchResult} />
     </div>
   );
 }
